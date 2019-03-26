@@ -1,6 +1,8 @@
 package com.example.getit;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
         ,MiCuentaFragment.OnFragmentInteractionListener
         ,CrearAnuncioFragment.OnFragmentInteractionListener
+        ,CompraFragment.OnFragmentInteractionListener
         ,AnunciosFragment.OnListFragmentInteractionListener
         ,AnuncioDetalleFragment.OnFragmentInteractionListener
         ,HistorialAnunciosFragment.OnListFragmentInteractionListener
@@ -107,9 +110,14 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void GoToAnuncioDetalleFragment(View v) {
+    public void GoToAnuncioDetalleFragment(View anuncio_detalle_view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.contenedor, new AnuncioDetalleFragment()).commit();
+    }
+
+    public void GoToCompraFragment(View compra_view) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new CompraFragment()).commit();
     }
 
     @Override

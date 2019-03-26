@@ -105,4 +105,8 @@ public class AnuncioDetalleFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void GoToCompraFragment(View compra_view) {
+
+    }
 }

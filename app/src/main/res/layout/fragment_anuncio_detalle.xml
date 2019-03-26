@@ -64,6 +64,7 @@
 
             <Button
                 android:id="@+id/ComprarBtn"
+                android:onClick="GoToCompraFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="comprar" />
