@@ -105,4 +105,8 @@ public class ComentariosFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void GoToComentarioFragment(View compra_view) {
+
+    }
 }

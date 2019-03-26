@@ -109,4 +109,12 @@ public class AnuncioDetalleFragment extends Fragment {
     public void GoToCompraFragment(View compra_view) {
 
     }
+
+    public void GoToPerfilFragment(View perfil_view) {
+
+    }
+
+    public void GoToComentarioFragment(View comentario_view) {
+
+    }
 }

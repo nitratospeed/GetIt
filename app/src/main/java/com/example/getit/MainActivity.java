@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity
         ,MiCuentaFragment.OnFragmentInteractionListener
         ,CrearAnuncioFragment.OnFragmentInteractionListener
         ,CompraFragment.OnFragmentInteractionListener
+        ,ComentariosFragment.OnFragmentInteractionListener
+        ,PerfilFragment.OnFragmentInteractionListener
         ,AnunciosFragment.OnListFragmentInteractionListener
         ,AnuncioDetalleFragment.OnFragmentInteractionListener
         ,HistorialAnunciosFragment.OnListFragmentInteractionListener
@@ -118,6 +120,16 @@ public class MainActivity extends AppCompatActivity
     public void GoToCompraFragment(View compra_view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.contenedor, new CompraFragment()).commit();
+    }
+
+    public void GoToComentarioFragment(View compra_view) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new ComentariosFragment()).commit();
+    }
+
+    public void GoToPerfilFragment(View compra_view) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new PerfilFragment()).commit();
     }
 
     @Override

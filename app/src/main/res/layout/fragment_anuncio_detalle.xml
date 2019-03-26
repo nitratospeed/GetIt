@@ -56,6 +56,20 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/galaxy" />
 
+            <Button
+                android:id="@+id/ComentarBtn"
+                android:onClick="GoToComentarioFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comentar" />
+
+            <Button
+                android:id="@+id/PerfilVendedorBtn"
+                android:onClick="GoToPerfilFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ver Información del vendedor" />
+
             <ImageButton
                 android:id="@+id/direccionMapsBtn"
                 android:layout_width="match_parent"

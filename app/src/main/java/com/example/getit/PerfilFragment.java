@@ -105,4 +105,8 @@ public class PerfilFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void GoToPerfilFragment(View compra_view) {
+
+    }
 }

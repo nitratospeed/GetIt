@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.getit.dummy.DummyContent;
 import com.example.getit.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +29,8 @@ public class HistorialComprasFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-
+    //lista de productos
+    private List<DummyItem> dummyItemList = new ArrayList<>();
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -70,6 +72,15 @@ public class HistorialComprasFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             recyclerView.setAdapter(new HistorialComprasAdapter(DummyContent.ITEMS, mListener));
+            //data de prueba
+            DummyItem dummyItem = new DummyItem("1","Vendo Scooter Legendaria","---", GetImageResource("@drawable/jetson"), "S./5200");
+            dummyItemList.add(dummyItem);
+
+            dummyItem = new DummyItem("2", "Vendo Camara Canon Rebel", "---", GetImageResource("@drawable/canon"),"S./1300");
+            dummyItemList.add(dummyItem);
+
+            recyclerView.setAdapter(new HistorialComprasAdapter(dummyItemList, mListener));
+            //
         }
         return view;
     }
@@ -105,5 +116,11 @@ public class HistorialComprasFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
+    }
+
+    public int GetImageResource(String drawroute){
+        int resId = getContext().getResources().getIdentifier(
+                drawroute, "drawable", getContext().getPackageName());
+        return resId;
     }
 }

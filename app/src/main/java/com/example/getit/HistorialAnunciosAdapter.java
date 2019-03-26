@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.getit.HistorialAnunciosFragment.OnListFragmentInteractionListener;
@@ -38,6 +39,8 @@ public class HistorialAnunciosAdapter extends RecyclerView.Adapter<HistorialAnun
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);
+        holder.mPrecio.setText(mValues.get(position).precio);
+        holder.mImagen.setImageResource(mValues.get(position).imagen);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +63,8 @@ public class HistorialAnunciosAdapter extends RecyclerView.Adapter<HistorialAnun
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
+        public final ImageView mImagen;
+        public final TextView mPrecio;
         public DummyItem mItem;
 
         public ViewHolder(View view) {
@@ -67,6 +72,8 @@ public class HistorialAnunciosAdapter extends RecyclerView.Adapter<HistorialAnun
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.item_number);
             mContentView = (TextView) view.findViewById(R.id.content);
+            mImagen = view.findViewById(R.id.imagen);
+            mPrecio = view.findViewById(R.id.precio);
         }
 
         @Override

@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 import com.example.getit.dummy.DummyContent;
 import com.example.getit.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -26,7 +29,8 @@ public class HistorialAnunciosFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-
+    //lista de productos
+    private List<DummyItem> dummyItemList = new ArrayList<>();
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -68,6 +72,16 @@ public class HistorialAnunciosFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             recyclerView.setAdapter(new HistorialAnunciosAdapter(DummyContent.ITEMS, mListener));
+
+            //data de prueba
+            DummyItem dummyItem = new DummyItem("1","Vendo Samsung Galaxy S10","---", GetImageResource("@drawable/galaxy"), "S./3600");
+            dummyItemList.add(dummyItem);
+
+            dummyItem = new DummyItem("2", "Vendo OnePlus 6T", "---", GetImageResource("@drawable/oneplus"),"S./1900");
+            dummyItemList.add(dummyItem);
+
+            recyclerView.setAdapter(new HistorialAnunciosAdapter(dummyItemList, mListener));
+            //
         }
         return view;
     }
@@ -103,5 +117,11 @@ public class HistorialAnunciosFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
+    }
+
+    public int GetImageResource(String drawroute){
+        int resId = getContext().getResources().getIdentifier(
+                drawroute, "drawable", getContext().getPackageName());
+        return resId;
     }
 }
