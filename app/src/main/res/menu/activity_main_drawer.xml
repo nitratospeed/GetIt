@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_anuncios"
+
+            android:title="Anuncios" />
+        <item
+            android:id="@+id/nav_crear_anuncio"
+
+            android:title="Crear Anuncio" />
+        <item
+            android:id="@+id/nav_historial_anuncios"
+
+            android:title="Historial de Anuncios" />
+        <item
+            android:id="@+id/nav_historial_compras"
+
+            android:title="Historial de Compras" />
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_mi_cuenta"
+
+                android:title="Mi Cuenta" />
+            <item
+                android:id="@+id/nav_cerrar_sesion"
+
+                android:title="Cerrar Sesión" />
+        </menu>
+    </item>
+
+</menu>
