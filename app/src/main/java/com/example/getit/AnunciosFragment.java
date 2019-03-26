@@ -1,18 +1,23 @@
 package com.example.getit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.getit.dummy.DummyContent;
 import com.example.getit.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +33,8 @@ public class AnunciosFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-
+    //lista de productos
+    private List<DummyItem> dummyItemList = new ArrayList<>();
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -70,6 +76,16 @@ public class AnunciosFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             recyclerView.setAdapter(new AnunciosAdapter(DummyContent.ITEMS, mListener));
+
+            //data de prueba
+            DummyItem dummyItem = new DummyItem("1","Vendo Samsung Galaxy S10","---", GetImageResource("@drawable/galaxy"), "S./3600");
+            dummyItemList.add(dummyItem);
+
+            dummyItem = new DummyItem("2", "Vendo OnePlus 6T", "---", GetImageResource("@drawable/oneplus"),"S./1900");
+            dummyItemList.add(dummyItem);
+
+            recyclerView.setAdapter(new AnunciosAdapter(dummyItemList, mListener));
+            //
         }
         return view;
     }
@@ -105,5 +121,11 @@ public class AnunciosFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
+    }
+
+    public int GetImageResource(String drawroute){
+        int resId = getContext().getResources().getIdentifier(
+                drawroute, "drawable", getContext().getPackageName());
+        return resId;
     }
 }

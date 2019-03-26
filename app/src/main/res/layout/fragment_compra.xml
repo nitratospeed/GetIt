@@ -71,7 +71,7 @@
                 android:inputType="number" />
 
             <EditText
-                android:id="@+id/Fecha Expiración"
+                android:id="@+id/fechaExpiracion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"

@@ -38,7 +38,7 @@ public class DummyContent {
     }
 
     private static DummyItem createDummyItem(int position) {
-        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
+        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position), 0, "" + position);
     }
 
     private static String makeDetails(int position) {
@@ -57,11 +57,15 @@ public class DummyContent {
         public final String id;
         public final String content;
         public final String details;
+        public final int imagen;
+        public final String precio;
 
-        public DummyItem(String id, String content, String details) {
+        public DummyItem(String id, String content, String details, int imagen, String precio) {
             this.id = id;
             this.content = content;
             this.details = details;
+            this.imagen = imagen;
+            this.precio = precio;
         }
 
         @Override
