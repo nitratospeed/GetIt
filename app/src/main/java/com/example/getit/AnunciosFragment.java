@@ -55,7 +55,8 @@ public class AnunciosFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //set toolbar text
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Anuncios");
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }

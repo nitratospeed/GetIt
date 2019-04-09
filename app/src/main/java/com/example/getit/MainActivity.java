@@ -3,6 +3,8 @@ package com.example.getit;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -40,7 +42,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Anuncios");
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -51,6 +55,10 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //set default fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new AnunciosFragment()).addToBackStack(null).commit();
     }
 
     @Override
@@ -94,17 +102,24 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (id == R.id.nav_anuncios) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new AnunciosFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new AnunciosFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_crear_anuncio) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new CrearAnuncioFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new CrearAnuncioFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_historial_anuncios) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new HistorialAnunciosFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new HistorialAnunciosFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_historial_compras) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new HistorialComprasFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new HistorialComprasFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_mi_cuenta) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new MiCuentaFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new MiCuentaFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_cerrar_sesion) {
+            SharedPreferences prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("Session", false);
+            editor.commit();
 
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            finish();  //Kill the activity from which you will go to next activity
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -114,22 +129,22 @@ public class MainActivity extends AppCompatActivity
 
     public void GoToAnuncioDetalleFragment(View anuncio_detalle_view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedor, new AnuncioDetalleFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new AnuncioDetalleFragment()).addToBackStack(null).commit();
     }
 
     public void GoToCompraFragment(View compra_view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedor, new CompraFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new CompraFragment()).addToBackStack(null).commit();
     }
 
     public void GoToComentarioFragment(View compra_view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedor, new ComentariosFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new ComentariosFragment()).addToBackStack(null).commit();
     }
 
     public void GoToPerfilFragment(View compra_view) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedor, new PerfilFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new PerfilFragment()).addToBackStack(null).commit();
     }
 
     @Override
