@@ -36,8 +36,25 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.Manifest.permission.READ_CONTACTS;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 /**
  * A login screen that offers login via email/password.
  */
@@ -51,6 +68,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private String NombresApellidos;
+
+    private List<Usuario> usuarioList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +161,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        }
+
+        // Check for a valid password.
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+
+        if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -317,7 +345,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 //finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError(getString(R.string.error_incorrect_email_or_password));
                 mPasswordView.requestFocus();
             }
         }
@@ -334,12 +362,55 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String emailText = email.getText().toString();
         EditText password = findViewById(R.id.password);
         String passwordText = password.getText().toString();
-        UsuarioDAO usuarioDAO = new UsuarioDAO(getBaseContext());
-
+        //UsuarioDAO usuarioDAO = new UsuarioDAO(getBaseContext());
+        //final Usuario usuario = new Usuario();
         try {
-            NombresApellidos = usuarioDAO.Login(emailText,passwordText);
-            return true;
-        } catch (DAOException e) {
+            //NombresApellidos = usuarioDAO.Login(emailText,passwordText);
+
+
+            OkHttpClient client = new OkHttpClient();
+
+            HttpUrl.Builder urlBuilder = HttpUrl.parse("http://getitrest.azurewebsites.net/api/users/login/").newBuilder();
+            urlBuilder.addQueryParameter("Email", emailText);
+            urlBuilder.addQueryParameter("Password", passwordText);
+            String url = urlBuilder.build().toString();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Call call, final Response response) throws IOException {
+                    try {
+                        if (!response.isSuccessful()) {
+                            throw new IOException("Unexpected code " + response);
+                        } else {
+                            String cadenaJson = response.body().string();
+                            JSONObject a  = new JSONObject(cadenaJson);
+                            String b = a.toString().replace("{", "");
+                            String c = b.toString().replace("}", "");
+                            NombresApellidos = a.get("Email").toString();
+                    }
+                    }
+                    catch (Exception e){
+
+                    }
+                }
+            });
+
+            if (NombresApellidos == null){
+                return false;
+            }
+            else{
+                return true;
+            }
+        } catch (Exception e) {
             return false;
         }
     }
