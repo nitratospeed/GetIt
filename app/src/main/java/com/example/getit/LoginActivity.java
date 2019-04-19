@@ -72,15 +72,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        SharedPreferences prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
-        Boolean userSession = prefs.getBoolean("Session", false);
-
-        if (userSession){
-            Intent i = new Intent(LoginActivity.this, MainActivity.class);
-            finish();  //Kill the activity from which you will go to next activity
-            startActivity(i);
-        }
-
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
         //populateAutoComplete();
