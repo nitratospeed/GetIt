@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity
 
         //set default fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedor, new AnunciosFragment()).addToBackStack(null).commit();
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new AnunciosFragment()).commit();
     }
 
     @Override
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (id == R.id.nav_anuncios) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new AnunciosFragment()).addToBackStack(null).commit();
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new AnunciosFragment()).commit();
         } else if (id == R.id.nav_crear_anuncio) {
             fragmentManager.beginTransaction().replace(R.id.contenedor, new CrearAnuncioFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_historial_anuncios) {
