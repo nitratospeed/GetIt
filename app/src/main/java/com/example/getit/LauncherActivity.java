@@ -18,9 +18,9 @@ public class LauncherActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             public void run() {
                 SharedPreferences prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
-                Boolean userSession = prefs.getBoolean("Session", false);
+                String userSession = prefs.getString("Email","");
 
-                if (userSession){
+                if (userSession != ""){
                     Intent i = new Intent(LauncherActivity.this, MainActivity.class);
                     finish();  //Kill the activity from which you will go to next activity
                     startActivity(i);

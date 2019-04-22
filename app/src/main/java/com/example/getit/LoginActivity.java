@@ -29,6 +29,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText mEmailView;
     private EditText mPasswordView;
+    private String NombresApellidos;
+    private String Email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +50,13 @@ public class LoginActivity extends AppCompatActivity {
                         //save session in shared pref
                         SharedPreferences prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
-                        editor.putBoolean("Session", true);
+                        editor.putString("NombresApellidos", NombresApellidos);
+                        editor.putString("Email", Email);
                         editor.commit();
 
                         //show toast
                         Context context = getApplicationContext();
-                        CharSequence text = "¡Bienvenido!";
+                        CharSequence text = "¡Bienvenido " + Email + " !";
                         int duration = Toast.LENGTH_SHORT;
 
                         Toast toast = Toast.makeText(context, text, duration);
@@ -144,8 +147,17 @@ public class LoginActivity extends AppCompatActivity {
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e("OK",response.toString());
-                        callBack.onSuccess();
+                        try
+                        {
+                            JSONObject jsonObject = new JSONObject(response);
+                            NombresApellidos = jsonObject.getString("Name") + ' ' + jsonObject.getString("LastName");
+                            Email = jsonObject.getString("Email");
+                            callBack.onSuccess();
+                        }
+                        catch (Exception error)
+                        {
+                            Log.e("Error",error.toString());
+                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override
