@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.getit.AnunciosFragment.OnListFragmentInteractionListener;
+import com.example.getit.dummy.DummyContent;
 import com.example.getit.dummy.DummyContent.DummyItem;
 
 import java.util.List;
@@ -19,12 +20,10 @@ import java.util.List;
  */
 public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final List<Producto> productoList;
 
-    public AnunciosAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
-        mListener = listener;
+    public AnunciosAdapter(List<Producto> items) {
+        productoList = items;
     }
 
     @Override
@@ -36,49 +35,33 @@ public class AnunciosAdapter extends RecyclerView.Adapter<AnunciosAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
-        holder.mPrecio.setText(mValues.get(position).precio);
-        holder.mImagen.setImageResource(mValues.get(position).imagen);
+        Producto producto = productoList.get(position);
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });
+        holder.ProductIdView.setText(String.valueOf(producto.getProductId()));
+        holder.TitleView.setText(producto.getTitle());
+        holder.PriceView.setText(String.valueOf(producto.getPrice()));
+        //holder.ImageCodeView.setImageResource(mValues.get(position).imagen);
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return productoList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public final ImageView mImagen;
-        public final TextView mPrecio;
-        public DummyItem mItem;
+        public final TextView ProductIdView;
+        public final TextView TitleView;
+        //public final ImageView ImageCodeView;
+        public final TextView PriceView;
+
+        public Producto producto;
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
-            mImagen = view.findViewById(R.id.imagen);
-            mPrecio = view.findViewById(R.id.precio);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            ProductIdView = view.findViewById(R.id.item_number);
+            TitleView = view.findViewById(R.id.content);
+            //ImageCodeView = view.findViewById(R.id.imagen);
+            PriceView = view.findViewById(R.id.precio);
         }
     }
 }

@@ -1,85 +1,56 @@
 package com.example.getit;
 
 public class Usuario {
-    private int id;
-    private String email;
-    private String password;
-    private String nombres;
-    private String apellidos;
-    private String fechaNacimiento;
-    private String sexo;
-    private String celular;
-    private String direccion;
+    private int UserId;
+    private String Name;
+    private String LastName;
+    private String Age;
+    private String Dni;
+    private String Email;
+    private String Password;
+    private String Cellphone;
+    private String Latitude;
+    private String Longitude;
+    private String Stars;
+    private String RegisterCompleted;
 
-    public int getId() {
-        return id;
+    public int getUserId() {
+        return UserId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUserId(int userId) {
+        UserId = userId;
     }
 
-    public String getApellidos() {
-        return apellidos;
+    public String getName() {
+        return Name;
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+    public void setName(String name) {
+        Name = name;
     }
 
-    public String getCelular() {
-        return celular;
+    public String getLastName() {
+        return LastName;
     }
 
-    public void setCelular(String celular) {
-        this.celular = celular;
+    public void setLastName(String lastName) {
+        LastName = lastName;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public String getAge() {
+        return Age;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setAge(String age) {
+        Age = age;
     }
 
-    public String getEmail() {
-        return email;
+    public String getDni() {
+        return Dni;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(String fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public String getNombres() {
-        return nombres;
-    }
-
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
+    public void setDni(String dni) {
+        Dni = dni;
     }
 }

@@ -35,7 +35,8 @@
                 android:layout_height="250dp"
                 android:adjustViewBounds="false"
                 android:cropToPadding="false"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_default"/>
 
             <TextView
                 android:id="@+id/content"
