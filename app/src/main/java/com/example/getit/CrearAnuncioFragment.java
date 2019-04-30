@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,7 +13,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +37,12 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -61,10 +68,9 @@ public class CrearAnuncioFragment extends Fragment implements View.OnClickListen
     private EditText AmountV;
     private EditText PriceV;
     private ImageView ImagenV;
+    private String encodedImage;
     private int IdUserSession;
-    protected static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
-    private Uri file;
-
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     private OnFragmentInteractionListener mListener;
 
     public CrearAnuncioFragment() {
@@ -191,21 +197,79 @@ public class CrearAnuncioFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    String currentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    static final int REQUEST_TAKE_PHOTO = 1;
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this.getContext(),
+                        "com.example.getit.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ImagenV.setImageBitmap(imageBitmap);
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            // Get the dimensions of the View
+            int targetW = ImagenV.getWidth();
+            int targetH = ImagenV.getHeight();
+
+            // Get the dimensions of the bitmap
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+            int photoW = bmOptions.outWidth;
+            int photoH = bmOptions.outHeight;
+
+            // Determine how much to scale down the image
+            int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+            // Decode the image file into a Bitmap sized to fill the View
+            bmOptions.inJustDecodeBounds = false;
+            bmOptions.inSampleSize = scaleFactor;
+            bmOptions.inPurgeable = true;
+
+            Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+            ImagenV.setImageBitmap(bitmap);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);
+            byte[] b = baos.toByteArray();
+
+            encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+
         }
     }
 
@@ -263,6 +327,17 @@ public class CrearAnuncioFragment extends Fragment implements View.OnClickListen
             cancel = true;
         }
 
+        if (encodedImage.isEmpty()){
+            //show toast
+            CharSequence text = "Es necesario capturar una imagen del producto";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(getActivity(), text, duration);
+            toast.show();
+            //
+            cancel = true;
+        }
+
         if(cancel){
             focusView.requestFocus();
         } else {
@@ -283,7 +358,8 @@ public class CrearAnuncioFragment extends Fragment implements View.OnClickListen
                 jsonBody.put("Description", description);
                 jsonBody.put("Amount", amount);
                 jsonBody.put("Price", price);
-                jsonBody.put("ImageCode", "image");
+                //jsonBody.put("ImageCode", encodedImage);
+                jsonBody.put("ImageCode", "imagen");
                 jsonBody.put("Latitude", Double.parseDouble(LAT));
                 jsonBody.put("Longitude", Double.parseDouble(LNG));
                 final String requestBody = jsonBody.toString();

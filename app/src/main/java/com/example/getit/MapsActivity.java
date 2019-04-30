@@ -119,6 +119,10 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMyLoca
         editor.putString("Longitud", LAT);
         editor.putString("Latitud", LNG);
         editor.commit();
+
+        Toast.makeText(this, "Ubicación obtenida", Toast.LENGTH_SHORT).show();
+
+        this.finish();
     }
 
     private void enableMyLocation() {
