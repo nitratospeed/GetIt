@@ -22,66 +22,137 @@
                 android:id="@+id/titulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Vendo Samsung Galaxy s10"
                 android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/nombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Samsung Galaxy S10" />
-
-            <TextView
-                android:id="@+id/cantidad"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="3" />
 
             <TextView
                 android:id="@+id/descripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Celular Nuevo: viene con cargador" />
+                />
 
             <TextView
                 android:id="@+id/precio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="3600" />
+                />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imagen"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/galaxy" />
+                android:src="@drawable/image_default" />
 
             <Button
                 android:id="@+id/ComentarBtn"
-                android:onClick="GoToComentarioFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Comentar" />
+                android:onClick="GoToComentarioFragment"
+                android:text="Comentar"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/PerfilVendedorBtn"
-                android:onClick="GoToPerfilFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ver Información del vendedor" />
+                android:onClick="GoToPerfilFragment"
+                android:text="Ver Información del vendedor"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/direccionMapsBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/maps" />
+                android:src="@drawable/maps"
+                android:visibility="gone" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/cantidad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Cantidad a Comprar"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Selecciona medio de pago" />
+
+            <RadioGroup
+                android:id="@+id/radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/radioVISA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VISA"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/radioMASTERCARD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MASTERCARD" />
+
+            </RadioGroup>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/numeroTarjeta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Número de Tarjeta"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/fechaExpiracion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Fecha Expiración"
+                    android:inputType="textPersonName" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/CVV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="CVV"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/ComprarBtn"
-                android:onClick="GoToCompraFragment"
-                android:layout_width="match_parent"
+                android:layout_width="162dp"
                 android:layout_height="wrap_content"
-                android:text="comprar" />
+                android:layout_marginLeft="100sp"
+                android:text="comprar"
+                android:textAlignment="center" />
 
         </LinearLayout>
     </ScrollView>

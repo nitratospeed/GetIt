@@ -2,11 +2,13 @@ package com.example.getit;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -37,7 +42,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class AnunciosFragment extends Fragment {
+public class AnunciosFragment extends Fragment implements View.OnClickListener {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -143,6 +148,7 @@ public class AnunciosFragment extends Fragment {
             recyclerView.setAdapter(new AnunciosAdapter(productoArrayList));
             //
         }
+
         return view;
     }
 
@@ -162,6 +168,30 @@ public class AnunciosFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public interface FragmentCommunication {
+        void respond(int position,String name,String job);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch(view.getId()){
+            case R.id.imagen:
+                TextView idProducto = (TextView) view.findViewById(R.id.item_number) ;
+                int idProductoInt = Integer.parseInt(idProducto.getText().toString());
+                Bundle bundle = new Bundle();
+                bundle.putInt("ProductId", idProductoInt); // Put anything what you want
+
+                AnuncioDetalleFragment anuncioDetalleFragment = new AnuncioDetalleFragment();
+                anuncioDetalleFragment.setArguments(bundle);
+                //go to anuncios fragment
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.contenedor, new AnuncioDetalleFragment()).addToBackStack(null).commit();
+                //
+                break;
+        }
     }
 
     /**
