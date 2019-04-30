@@ -23,4 +23,5 @@
     <string name="error_field_required">El campo es requerido</string>
     <string name="login_recuperar_contrasena"><u>¿Olvidaste tu contraseña?</u></string>
     <string name="login_crear_cuenta"><u>¿No tienes cuenta?</u></string>
+    <string name="title_activity_maps">Map</string>
 </resources>

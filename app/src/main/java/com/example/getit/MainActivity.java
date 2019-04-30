@@ -114,7 +114,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_cerrar_sesion) {
             SharedPreferences prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("NombresApellidos", "");
             editor.putString("Email", "");
+            editor.putInt("UserId", 0);
+            editor.putString("Latitud", "");
+            editor.putString("Longitud", "");
             editor.commit();
 
             Intent i = new Intent(MainActivity.this, LoginActivity.class);

@@ -54,7 +54,7 @@ public class MiCuentaFragment extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
 
-    //campos
+    //step1:Declaracion variables
     private EditText nombresView;
     private EditText apellidosView;
     private EditText edadView;
@@ -90,7 +90,7 @@ public class MiCuentaFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //set toolbar text
+        //step 2 cambiar texto main bar
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("Mi Cuenta");
 
         if (getArguments() != null) {
@@ -102,7 +102,7 @@ public class MiCuentaFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        //step3 obtener valores id
         View myView = inflater.inflate(R.layout.fragment_mi_cuenta, container, false);
 
         nombresView = myView.findViewById(R.id.nombres);
@@ -138,7 +138,7 @@ public class MiCuentaFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
+        //step4 obtener shared preferences
         SharedPreferences prefs = this.getActivity().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         userSession = prefs.getString("Email","");
 

@@ -1,12 +1,41 @@
 package com.example.getit;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 
 
 /**
@@ -17,7 +46,7 @@ import android.view.ViewGroup;
  * Use the {@link CrearAnuncioFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CrearAnuncioFragment extends Fragment {
+public class CrearAnuncioFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -26,6 +55,15 @@ public class CrearAnuncioFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private EditText TitleV;
+    private EditText DescriptionV;
+    private EditText AmountV;
+    private EditText PriceV;
+    private ImageView ImagenV;
+    private int IdUserSession;
+    protected static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
+    private Uri file;
 
     private OnFragmentInteractionListener mListener;
 
@@ -54,6 +92,8 @@ public class CrearAnuncioFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //step 2 cambiar texto main bar
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Nuevo Anuncio");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -64,7 +104,25 @@ public class CrearAnuncioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_crear_anuncio, container, false);
+        View myView =  inflater.inflate(R.layout.fragment_crear_anuncio, container, false);
+
+        TitleV = myView.findViewById(R.id.Title);
+        DescriptionV = myView.findViewById(R.id.Description);
+        AmountV = myView.findViewById(R.id.Amount);
+        PriceV = myView.findViewById(R.id.Price);
+        ImagenV = myView.findViewById(R.id.ImgProduct);
+
+        Button CrearAnuncioBtn = myView.findViewById(R.id.CrearAnuncioBtn);
+        CrearAnuncioBtn.setOnClickListener(this);
+
+        ImageButton OpenCameraBtn = myView.findViewById(R.id.OpenCameraBtn);
+        OpenCameraBtn.setOnClickListener(this);
+
+        ImageButton OpenMapsBtn = myView.findViewById(R.id.OpenMapsBtn);
+        OpenMapsBtn.setOnClickListener(this);
+
+        return myView;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -77,6 +135,10 @@ public class CrearAnuncioFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        //step4 obtener shared preferences
+        SharedPreferences prefs = this.getActivity().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        IdUserSession = prefs.getInt("UserId",0);
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -91,6 +153,184 @@ public class CrearAnuncioFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View view) {
+
+        switch(view.getId()){
+            case R.id.CrearAnuncioBtn:
+                CrearAnuncio(new VolleyCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        //show toast
+                        CharSequence text = "Anuncio creado exitosamente";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(getActivity(), text, duration);
+                        toast.show();
+                        //
+                        SharedPreferences prefs = getActivity().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString("Latitud", "");
+                        editor.putString("Longitud", "");
+                        editor.commit();
+                        //go to anuncios fragment
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.contenedor, new AnunciosFragment()).commit();
+                        //
+                    }});
+                break;
+
+            case R.id.OpenMapsBtn:
+                Intent mapsIntent = new Intent(getActivity(), MapsActivity.class);
+                startActivity(mapsIntent);
+                break;
+
+            case R.id.OpenCameraBtn:
+                dispatchTakePictureIntent();
+                break;
+        }
+    }
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ImagenV.setImageBitmap(imageBitmap);
+        }
+    }
+
+    public void CrearAnuncio(final VolleyCallBack callBack){
+// Reset errors.
+        TitleV.setError(null);
+        DescriptionV.setError(null);
+        AmountV.setError(null);
+        PriceV.setError(null);
+
+        boolean cancel = false;
+        View focusView = null;
+
+        final String title = TitleV.getText().toString();
+        final String description = DescriptionV.getText().toString();
+        final int amount = Integer.parseInt(AmountV.getText().toString());
+        final double price = Double.parseDouble(PriceV.getText().toString());
+
+        SharedPreferences prefs = this.getActivity().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        String LAT = prefs.getString("Latitud","");
+        String LNG = prefs.getString("Longitud","");
+
+        if (TextUtils.isEmpty(title)) {
+            TitleV.setError(getString(R.string.error_field_required));
+            focusView = TitleV;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(description)) {
+            DescriptionV.setError(getString(R.string.error_field_required));
+            focusView = DescriptionV;
+            cancel = true;
+        }
+
+        if (amount == 0) {
+            AmountV.setError(getString(R.string.error_field_required));
+            focusView = AmountV;
+            cancel = true;
+        }
+
+        if (price == 0) {
+            PriceV.setError(getString(R.string.error_field_required));
+            focusView = PriceV;
+            cancel = true;
+        }
+
+        if (LAT.isEmpty() || LNG.isEmpty()){
+            //show toast
+            CharSequence text = "Es necesario obtener la ubicación del producto";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(getActivity(), text, duration);
+            toast.show();
+            //
+            cancel = true;
+        }
+
+        if(cancel){
+            focusView.requestFocus();
+        } else {
+            try {
+
+                RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+
+                Uri.Builder builder = new Uri.Builder();
+                builder.scheme("http")
+                        .authority("getitrest.azurewebsites.net")
+                        .appendPath("api")
+                        .appendPath("products");
+                String url = builder.build().toString();
+
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("UserId", IdUserSession);
+                jsonBody.put("Title", title);
+                jsonBody.put("Description", description);
+                jsonBody.put("Amount", amount);
+                jsonBody.put("Price", price);
+                jsonBody.put("ImageCode", "image");
+                jsonBody.put("Latitude", Double.parseDouble(LAT));
+                jsonBody.put("Longitude", Double.parseDouble(LNG));
+                final String requestBody = jsonBody.toString();
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("OK",response.toString());
+                        callBack.onSuccess();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error",error.toString());
+                    }
+                }) {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json";
+                    }
+
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        try {
+                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+                        } catch (UnsupportedEncodingException uee) {
+                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                            return null;
+                        }
+                    }
+                };
+                requestQueue.add(stringRequest);
+            } catch (Exception e) {
+                //show toast
+                CharSequence text = e.getMessage();
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(getActivity(), text, duration);
+                toast.show();
+                //
+            }
+        }
+    }
+
+    public interface VolleyCallBack {
+        void onSuccess();
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

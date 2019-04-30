@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private String NombresApellidos;
     private String Email;
+    private int UserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,9 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString("NombresApellidos", NombresApellidos);
                         editor.putString("Email", Email);
+                        editor.putInt("UserId", UserId);
+                        editor.putString("Longitud", "");
+                        editor.putString("Latitud", "");
                         editor.commit();
 
                         //show toast
@@ -152,6 +156,7 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             NombresApellidos = jsonObject.getString("Name") + ' ' + jsonObject.getString("LastName");
                             Email = jsonObject.getString("Email");
+                            UserId = jsonObject.getInt("UserId");
                             callBack.onSuccess();
                         }
                         catch (Exception error)

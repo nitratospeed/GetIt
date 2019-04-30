@@ -19,55 +19,95 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Título del Producto"
-                android:inputType="textPersonName" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/editText2"
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Titulo" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/Description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Descripción" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/Amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cantidad"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/Price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Precio"
+                    android:inputType="number|numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Cantidad Disponible"
-                android:inputType="number" />
-
-            <EditText
-                android:id="@+id/editText3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Descripción"
-                android:inputType="textMultiLine" />
-
-            <EditText
-                android:id="@+id/editText4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Precio"
-                android:inputType="numberDecimal" />
+                android:layout_marginTop="15sp"
+                android:text="Imágen del Producto" />
 
             <ImageButton
-                android:id="@+id/openCameraBtn"
-                android:layout_width="match_parent"
+                android:id="@+id/OpenCameraBtn"
+                android:layout_width="96dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_menu_camera" />
 
-            <ImageButton
-                android:id="@+id/openMapsBtn"
+            <ImageView
+                android:id="@+id/ImgProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_default" />
+
+            <TextView
+                android:id="@+id/textView8"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:text="Ubicación del Producto" />
+
+            <ImageButton
+                android:id="@+id/OpenMapsBtn"
+                android:layout_width="96dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/maps" />
 
             <Button
                 android:id="@+id/CrearAnuncioBtn"
-                android:layout_width="match_parent"
+                android:layout_width="181dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="100sp"
+                android:layout_marginTop="20sp"
                 android:text="crear anuncio" />
+
+
         </LinearLayout>
     </ScrollView>
 
